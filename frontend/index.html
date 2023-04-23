@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HealthSync - Login or Register</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+        <header>
+        </a><h1>HealthSync</h1>
+        </header>
+    <main>
+        <!-- remove the anchor tag (just for ease of page navigation) -->
+        <a href="patient_homepage.html"> Go to patient home page </a>
+        <a href="doctor_homepage.html"> Go to doctor home page</a>
+        <div class="auth-container">
+            <div class="auth-toggle">
+                <button id="login-btn" class="active">Login</button>
+                <button id="register-btn">Register</button>
+            </div>
+            <div class="auth-forms">
+                <form id="login-form" class="active">
+                    <h2>Login</h2>
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" required>
+                    <button type="submit">Login</button>
+                </form>
+                <form id="register-form">
+                    <h2>Register</h2>
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" required>
+                    <label for="dob">DOB:</label>
+                    <input type="date" id="dob" name="dob" required>
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+                    <label for="phone">Phone:</label>
+                    <input type="tel" id="phone" name="phone" required>
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" required>
+                    <label for="confirm-password">Confirm Password:</label>
+                    <input type="password" id="confirm-password" name="confirm-password" required>
+                    <label>Are you a:</label>
+                    <div class="radio-buttons">
+                        <label>
+                            <input type="radio" name="user-type" value="doctor">
+                            Doctor
+                        </label>
+                        <label>
+                            <input type="radio" name="user-type" value="patient">
+                            Patient
+                        </label>
+                    </div>
+                    <button type="submit">Register</button>
+                </form>
+                
+            </div>
+        </div>
+    </main>
+    <script src="js/script.js"></script>
+</body>
+</html>
