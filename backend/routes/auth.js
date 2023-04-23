@@ -87,6 +87,8 @@ router.post('/login', (req, res, next) => {
             else {
                 res.status(200).json({
                     message: 'Login Successful',
+                    userId : fetchedUser._id,
+                    // store this id in local storage for making further communication with the server
                 });
             }
         })
