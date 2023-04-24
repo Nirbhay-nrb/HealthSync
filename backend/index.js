@@ -22,10 +22,20 @@ mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
 // Import routes
 const testRoute = require('./routes/test');
 const authRoute = require('./routes/auth');
+const docProfRoute = require('./routes/doctor_profile');
+const patProfRoute = require('./routes/patient_profile');
+const documentRoute = require('./routes/documents');
+const appointmentRoute = require('./routes/appointments');
+const timingRoute = require('./routes/timings');
 
 // Use routes
 app.use('/', testRoute);
 app.use('/auth', authRoute);
+app.use('/docprofile', docProfRoute);
+app.use('/patprofile', patProfRoute);
+app.use('/documents', documentRoute);
+app.use('/appointments', appointmentRoute);
+app.use('/timings', timingRoute);
 
 // Start server
 app.listen(port, () => {

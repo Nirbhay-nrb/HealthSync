@@ -3,10 +3,10 @@
 const mongoose = require('mongoose');
 
 const patientSchema = new mongoose.Schema({
-    _id: {
-        type: mongoose.Types.ObjectId,
-        default: new mongoose.Types.ObjectId,
-    },
+    // _id: {
+    //     type: mongoose.Types.ObjectId,
+    //     default: new mongoose.Types.ObjectId,
+    // },
     isDoctor: {
         type: Boolean,
         required: true,

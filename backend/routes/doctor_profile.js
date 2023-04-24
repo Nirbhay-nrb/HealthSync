@@ -2,9 +2,10 @@
 
 const express = require('express');
 const router = express.Router();
-const Patient = require('../models/doctors');
+const Doctor = require('../models/doctors');
 
-router.put('/doctor_profile/:id', async (req, res) => { // id is to be passed in the url
+// Updated doctor profile by id
+router.put('/update/:id', async (req, res) => { // id is to be passed in the url
     try {
         const doctor = await Doctor.findByIdAndUpdate(req.params.id, req.body, { new: true });
         if (!doctor) {
@@ -18,7 +19,7 @@ router.put('/doctor_profile/:id', async (req, res) => { // id is to be passed in
 });
 
 // Get doctor profile by id
-router.get('/doctor_profile/:id', async (req, res) => { // id is to be passed in the url
+router.get('/get/:id', async (req, res) => { // id is to be passed in the url
     try {
         const doctor = await Doctor.findById(req.params.id).populate('patients').populate('appointments');
         if (!doctor) {
@@ -32,7 +33,7 @@ router.get('/doctor_profile/:id', async (req, res) => { // id is to be passed in
 });
 
 // Delete doctor profile by id
-router.delete('/doctor_profile/:id', async (req, res) => { // id is to be passed in the url
+router.delete('/delete/:id', async (req, res) => { // id is to be passed in the url
     try {
         const doctor = await Doctor.findByIdAndDelete(req.params.id);
         if (!doctor) {
@@ -44,3 +45,6 @@ router.delete('/doctor_profile/:id', async (req, res) => { // id is to be passed
         res.status(500).send('Server error');
     }
 });
+
+
+module.exports = router;
