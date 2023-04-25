@@ -15,8 +15,8 @@
     </header>
     <main>
         <!-- remove the anchor tag (just for ease of page navigation) -->
-        <a href="patient_homepage.html"> Go to patient home page </a>
-        <a href="doctor_homepage.html"> Go to doctor home page</a>
+        <!-- <a href="patient_homepage.html"> Go to patient home page </a>
+        <a href="doctor_homepage.html"> Go to doctor home page</a> -->
         <div class="auth-container">
             <div class="auth-toggle">
                 <button id="login-btn" class="active">Login</button>
@@ -29,6 +29,17 @@
                     <input type="email" id="login-email" name="email" required>
                     <label for="password">Password:</label>
                     <input type="password" id="login-password" name="password" required>
+                    <label>Are you a:</label>
+                    <div class="radio-buttons">
+                        <label>
+                            <input type="radio" name="user-type" value="doctor" id="login-isDoctor">
+                            Doctor
+                        </label>
+                        <label>
+                            <input type="radio" name="user-type" value="patient">
+                            Patient
+                        </label>
+                    </div>
                 </form>
                 <button id="login">Login</button>
                 <form id="register-form">
