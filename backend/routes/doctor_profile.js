@@ -47,5 +47,17 @@ router.delete('/delete/:id', async (req, res) => { // id is to be passed in the 
     }
 });
 
+// Get all doctors
+router.get('/list', async (req, res) => {
+    try {
+        const doctors = await Doctor.find();
+        res.send(doctors);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server error');
+    }
+});
+
+
 
 module.exports = router;
