@@ -25,10 +25,10 @@ router.post('/register', (req, res, next) => {
                 speciality: '',
                 ageGroup: '',
                 highestQualification: '',
-                achievements: [],
-                timings: [],
-                patients: [],
-                appointments: [],
+                achievements: '',
+                // timings: [],
+                // patients: [],
+                // appointments: [],
 
             }) : new Patient({
                 name: req.body.name,
@@ -41,10 +41,10 @@ router.post('/register', (req, res, next) => {
                 height: '',
                 weight: '',
                 bloodGroup: '',
-                medicalConditions: [],
-                documents: [],
-                doctors: [],
-                appointments: [],
+                medicalConditions: '',
+                // documents: [],
+                // doctors: [],
+                // appointments: [],
             });
 
             // Save user to database

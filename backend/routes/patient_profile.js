@@ -21,7 +21,7 @@ router.put('/update/:id', async (req, res) => { // id is to be passed in the url
 // Get patient profile by id
 router.get('/get/:id', async (req, res) => { // id is to be passed in the url
     try {
-        const patient = await Patient.findById(req.params.id).populate('doctors').populate('appointments');
+        const patient = await Patient.findById(req.params.id);
         if (!patient) {
             return res.status(404).send('Patient not found');
         }

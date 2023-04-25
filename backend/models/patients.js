@@ -3,10 +3,6 @@
 const mongoose = require('mongoose');
 
 const patientSchema = new mongoose.Schema({
-    // _id: {
-    //     type: mongoose.Types.ObjectId,
-    //     default: new mongoose.Types.ObjectId,
-    // },
     isDoctor: {
         type: Boolean,
         required: true,
@@ -41,27 +37,24 @@ const patientSchema = new mongoose.Schema({
     height: {
         type: Number,
     },
-    documents: {
-        type: [String],
-    },
     bloodGroup: {
         type: String,
     },
     medicalConditions: {
-        type: [String],
+        type: String,
     },
-    documents: {
-        type: [mongoose.Types.ObjectId],
-        ref: 'Document',
-    },
-    doctors: {
-        type: [mongoose.Types.ObjectId],
-        ref: 'Doctor',
-    },
-    appointments: {
-        type: [mongoose.Types.ObjectId],
-        ref: 'Appointments',
-    },
+    // documents: {
+    //     type: [mongoose.Types.ObjectId],
+    //     ref: 'Document',
+    // },
+    // doctors: {
+    //     type: [mongoose.Types.ObjectId],
+    //     ref: 'Doctor',
+    // },
+    // appointments: {
+    //     type: [mongoose.Types.ObjectId],
+    //     ref: 'Appointments',
+    // },
 }, { timestamps: true });
 
 const Patient = mongoose.model('Patients', patientSchema);

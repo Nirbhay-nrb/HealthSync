@@ -1,3 +1,5 @@
+// getting the doctor profile
+
 function populateDoctorProfile() {
   // Retrieve doctor user ID from local storage
   const doctorId = localStorage.getItem("userId");
@@ -23,14 +25,16 @@ function populateDoctorProfile() {
 
 window.onload = populateDoctorProfile;
 
-function updateDoctorProfile() {
-  const id = localStorage.getItem("userId");
 
+// updating doctor profile
+
+async function updateDoctorProfile() {
+  const id = localStorage.getItem("userId");
+  console.log(id);
   const name = document.getElementById("name").value;
   const dob = document.getElementById("dob").value;
   const email = document.getElementById("email").value;
   const phone = document.getElementById("phone").value;
-  const isDoctor = document.getElementById("isDoctor").checked;
   const gender = document.getElementById("gender").value;
   const speciality = document.getElementById("speciality").value;
   const ageGroup = document.getElementById("age-group").value;
@@ -39,38 +43,38 @@ function updateDoctorProfile() {
   ).value;
   const achievements = document.getElementById("achievements").value;
 
-  fetch(`http://localhost:3000/docprofile/update/${id}`, {
-    method: "PUT",
-    body: JSON.stringify({
-      "name": name,
-      "dob": dob,
-      "email": email,
-      "phone": phone,
-      "isDoctor": isDoctor,
-      "gender": gender,
-      "speciality": speciality,
-      "ageGroup": ageGroup,
-      "highestQualification": highestQualification,
-      "achievements": [achievements],
-      "timings": [],
-      "patients": [],
-      "appointments": [],
-    }),
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      return response.json();
-    })
-    .then((data) => {
-      console.log("Doctor profile updated:", data);
-      // Update UI or show success message to user
-    })
-    .catch((error) => {
-      console.error("Error updating doctor profile:", error);
-      // Show error message to user
+  try {
+    const response = await fetch(`http://localhost:3000/docprofile/update/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        "name": name,
+        "dob": dob,
+        "email": email,
+        "phone": phone,
+        "gender": gender,
+        "speciality": speciality,
+        "ageGroup": ageGroup,
+        "highestQualification": highestQualification,
+        "achievements": achievements,
+        // "timings": [],
+        // "patients": [],
+        // "appointments": [],
+      }),
     });
+
+    if (response.ok) {
+      const data = await response.json();
+      alert("Doctor profile updated");
+    } else {
+      alert("Doctor profile update failed");
+    }
+  } catch (error) {
+    console.error(error);
+    alert("Doctor profile update failed - catch block");
+  }
 }
 
 document.getElementById("update").addEventListener("click", () => {

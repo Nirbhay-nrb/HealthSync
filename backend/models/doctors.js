@@ -3,11 +3,6 @@
 const mongoose = require('mongoose');
 
 const doctorSchema = new mongoose.Schema({
-    // _id: {
-    //     type: mongoose.Types.ObjectId,
-    //     default: new mongoose.Types.ObjectId,
-    // },
-
     isDoctor: {
         type: Boolean,
         required: true,
@@ -46,20 +41,20 @@ const doctorSchema = new mongoose.Schema({
         type: String,
     },
     achievements: {
-        type: [String],
+        type: String,
     },
-    timings: {
-        type: [mongoose.Types.ObjectId],
-        ref : 'Timings',
-    },
-    patients: {
-        type: [mongoose.Types.ObjectId],
-        ref : 'Patients',
-    },
-    appointments: {
-        type: [mongoose.Types.ObjectId],
-        ref: 'Appointments',
-    },
+    // timings: {
+    //     type: [mongoose.Types.ObjectId],
+    //     ref : 'Timings',
+    // },
+    // patients: {
+    //     type: [mongoose.Types.ObjectId],
+    //     ref : 'Patients',
+    // },
+    // appointments: {
+    //     type: [mongoose.Types.ObjectId],
+    //     ref: 'Appointments',
+    // },
 }, { timestamps: true });
 
 const Doctor = mongoose.model('Doctor', doctorSchema);

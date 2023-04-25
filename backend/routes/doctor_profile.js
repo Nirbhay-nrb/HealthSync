@@ -6,6 +6,7 @@ const Doctor = require('../models/doctors');
 
 // Updated doctor profile by id
 router.put('/update/:id', async (req, res) => { // id is to be passed in the url
+    console.log(req.body);
     try {
         const doctor = await Doctor.findByIdAndUpdate(req.params.id, req.body, { new: true });
         if (!doctor) {
@@ -21,7 +22,7 @@ router.put('/update/:id', async (req, res) => { // id is to be passed in the url
 // Get doctor profile by id
 router.get('/get/:id', async (req, res) => { // id is to be passed in the url
     try {
-        const doctor = await Doctor.findById(req.params.id).populate('patients').populate('appointments');
+        const doctor = await Doctor.findById(req.params.id);
         if (!doctor) {
             return res.status(404).send('Doctor not found');
         }
