@@ -23,7 +23,55 @@ function populatePatientProfile() {
         .catch((error) => console.error(error));
 }
 
-window.onload = populatePatientProfile;
+// getting the list of all doctors
+async function populateDoctorsList() {
+    const doctorsList = document.getElementById('doctors-row');
+// Fetch the list of doctors from the server
+    await fetch('http://localhost:3000/docprofile/list')
+        .then(response => response.json())
+        .then(doctors => {
+            // Create an unordered list to hold the doctors
+
+            // Loop through each doctor and create a list item for them
+            doctors.forEach(doctor => {
+                const doctorDiv = document.createElement('div');
+                doctorDiv.setAttribute('class', 'doctor');
+                const doctorInfo = document.createElement('div');
+                doctorInfo.setAttribute('class', 'doctor-info');
+                const doctorImage = document.createElement('img');
+                const doctorName = document.createElement('h3');
+                const doctorSpecialty = document.createElement('p');
+                const doctorExperience = document.createElement('p');
+
+                // Set the doctor information
+                doctorImage.src = `imgs/doc1.png`;
+                doctorImage.alt = `Doctor ${doctor.id}`;
+                doctorName.textContent = doctor.name;
+                doctorSpecialty.textContent = `Specialty: ${doctor.specialty}`;
+                doctorExperience.textContent = `Handles ages: ${doctor.ageGroup} years`;
+
+                // Add the doctor information to the list item
+                doctorInfo.appendChild(doctorImage);
+                doctorInfo.appendChild(doctorName);
+                doctorInfo.appendChild(doctorSpecialty);
+                doctorInfo.appendChild(doctorExperience);
+                doctorDiv.appendChild(doctorInfo);
+
+                // Add the list item to the doctors list
+                doctorsList.appendChild(doctorDiv);
+            });
+
+        })
+        .catch(error => {
+            console.error(error);
+        });
+
+}
+
+window.onload = function() {
+    populatePatientProfile();
+    populateDoctorsList();
+};
 
 
 // updating doctor profile

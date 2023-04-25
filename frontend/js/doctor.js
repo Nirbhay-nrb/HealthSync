@@ -22,8 +22,55 @@ function populateDoctorProfile() {
     })
     .catch((error) => console.error(error));
 }
+// getting the list of all patients
+async function populatePatientsList() {
+  const patientsList = document.getElementById('patients-row');
+// Fetch the list of patients from the server
+  await fetch('http://localhost:3000/patprofile/list')
+      .then(response => response.json())
+      .then(patients => {
+          // Create an unordered list to hold the doctors
 
-window.onload = populateDoctorProfile;
+          // Loop through each patient and create a list item for them
+          patients.forEach(patient => {
+              const patientDiv = document.createElement('div');
+              patientDiv.setAttribute('class', 'patient');
+              const patientInfo = document.createElement('div');
+              patientInfo.setAttribute('class', 'patient-info');
+              const patientImage = document.createElement('img');
+              const patientName = document.createElement('h3');
+              const patientSpecialty = document.createElement('p');
+              const patientExperience = document.createElement('p');
+
+              // Set the doctor information
+              patientImage.src = `imgs/doc1.png`;
+              patientImage.alt = `Doctor ${patient.id}`;
+              patientName.textContent = patient.name;
+              patientSpecialty.textContent = `Gender: ${patient.gender}`;
+              patientExperience.textContent = `DOB: ${patient.dob}`;
+
+              // Add the doctor information to the list item
+              patientInfo.appendChild(patientImage);
+              patientInfo.appendChild(patientName);
+              patientInfo.appendChild(patientSpecialty);
+              patientInfo.appendChild(patientExperience);
+              patientDiv.appendChild(patientInfo);
+
+              // Add the list item to the doctors list
+              patientsList.appendChild(patientDiv);
+          });
+
+      })
+      .catch(error => {
+          console.error(error);
+      });
+
+}
+
+window.onload = function() {
+  populateDoctorProfile();
+  populatePatientsList();  
+};
 
 
 // updating doctor profile
