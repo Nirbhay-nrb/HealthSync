@@ -26,7 +26,7 @@ function populatePatientProfile() {
 // getting the list of all doctors
 async function populateDoctorsList() {
     const doctorsList = document.getElementById('doctors-row');
-// Fetch the list of doctors from the server
+    // Fetch the list of doctors from the server
     await fetch('http://localhost:3000/docprofile/list')
         .then(response => response.json())
         .then(doctors => {
@@ -68,9 +68,43 @@ async function populateDoctorsList() {
 
 }
 
-window.onload = function() {
+async function populateTimings() {
+    // get the doctor ID from local storage
+    const doctorID = localStorage.getItem("userId");
+    console.log(doctorID);
+    // make the API call to get the timings for the doctor ID
+    await fetch(`localhost:3000/timings/get/${doctorID}`)
+        .then(response => response.json())
+        .then(timings => {
+            // get the timing list element
+            const timingDiv = document.getElementById("timing-list");
+            const heading = document.createElement("h3");
+            heading.innerHTML = "All Timings";
+            timingDiv.appendChild(heading);
+            const timingList = document.createElement("ul");
+
+            // loop through the timings and add them as list items to the timing list element
+            timings.forEach(timing => {
+                const timingListItem = document.createElement("li");
+                timingListItem.innerHTML = `
+            <span class="timing-day">${timing.day}</span>
+            <span class="timing-name">${timing.time}</span>
+            <span class="timing-location">${timing.location}</span>
+            <span class="timing-roomno">${timing.room}</span>
+            <button class="delete-button">Delete</button>
+        `;
+                timingList.appendChild(timingListItem);
+            });
+
+            timingDiv.appendChild(timingList);
+        })
+        .catch(error => console.error(error));
+}
+
+window.onload = function () {
     populatePatientProfile();
     populateDoctorsList();
+    populateTimings();
 };
 
 
