@@ -25,51 +25,107 @@ function populateDoctorProfile() {
 // getting the list of all patients
 async function populatePatientsList() {
   const patientsList = document.getElementById('patients-row');
-// Fetch the list of patients from the server
+  // Fetch the list of patients from the server
   await fetch('http://localhost:3000/patprofile/list')
-      .then(response => response.json())
-      .then(patients => {
-          // Create an unordered list to hold the doctors
+    .then(response => response.json())
+    .then(patients => {
+      // Create an unordered list to hold the doctors
 
-          // Loop through each patient and create a list item for them
-          patients.forEach(patient => {
-              const patientDiv = document.createElement('div');
-              patientDiv.setAttribute('class', 'patient');
-              const patientInfo = document.createElement('div');
-              patientInfo.setAttribute('class', 'patient-info');
-              const patientImage = document.createElement('img');
-              const patientName = document.createElement('h3');
-              const patientSpecialty = document.createElement('p');
-              const patientExperience = document.createElement('p');
+      // Loop through each patient and create a list item for them
+      patients.forEach(patient => {
+        const patientDiv = document.createElement('div');
+        patientDiv.setAttribute('class', 'patient');
+        const patientInfo = document.createElement('div');
+        patientInfo.setAttribute('class', 'patient-info');
+        const patientImage = document.createElement('img');
+        const patientName = document.createElement('h3');
+        const patientSpecialty = document.createElement('p');
+        const patientExperience = document.createElement('p');
 
-              // Set the doctor information
-              patientImage.src = `imgs/doc1.png`;
-              patientImage.alt = `Doctor ${patient.id}`;
-              patientName.textContent = patient.name;
-              patientSpecialty.textContent = `Gender: ${patient.gender}`;
-              patientExperience.textContent = `DOB: ${patient.dob}`;
+        // Set the doctor information
+        patientImage.src = `imgs/doc1.png`;
+        patientImage.alt = `Doctor ${patient.id}`;
+        patientName.textContent = patient.name;
+        patientSpecialty.textContent = `Gender: ${patient.gender}`;
+        patientExperience.textContent = `DOB: ${patient.dob}`;
 
-              // Add the doctor information to the list item
-              patientInfo.appendChild(patientImage);
-              patientInfo.appendChild(patientName);
-              patientInfo.appendChild(patientSpecialty);
-              patientInfo.appendChild(patientExperience);
-              patientDiv.appendChild(patientInfo);
+        // Add the doctor information to the list item
+        patientInfo.appendChild(patientImage);
+        patientInfo.appendChild(patientName);
+        patientInfo.appendChild(patientSpecialty);
+        patientInfo.appendChild(patientExperience);
+        patientDiv.appendChild(patientInfo);
 
-              // Add the list item to the doctors list
-              patientsList.appendChild(patientDiv);
-          });
-
-      })
-      .catch(error => {
-          console.error(error);
+        // Add the list item to the doctors list
+        patientsList.appendChild(patientDiv);
       });
+
+    })
+    .catch(error => {
+      console.error(error);
+    });
 
 }
 
-window.onload = function() {
+// Deleting the timing
+async function deleteTiming(timingId) {
+  try {
+    // make the API call to delete the timing with the specified ID
+    await fetch(`http://localhost:3000/timings/delete/${timingId}`, {
+      method: "DELETE"
+    });
+
+    // remove the timing from the DOM
+    const timingListItem = document.getElementById(`timing-${timingId}`);
+    timingListItem.remove();
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+async function populateTimings() {
+  // get the doctor ID from local storage
+  const doctorID = localStorage.getItem("userId");
+  console.log(doctorID);
+  // make the API call to get the timings for the doctor ID
+  await fetch(`http://localhost:3000/timings/get/${doctorID}`)
+    .then(response => response.json())
+    .then(timings => {
+      // get the timing list element
+      const timingDiv = document.getElementById("timing-list");
+      const heading = document.createElement("h3");
+      heading.innerHTML = "All Timings";
+      timingDiv.appendChild(heading);
+      const timingList = document.createElement("ul");
+
+      // loop through the timings and add them as list items to the timing list element
+      timings.forEach(timing => {
+        console.log(timing._id);
+        const timingListItem = document.createElement("li");
+        timingListItem.setAttribute("id", `timing-${timing._id}`);
+        timingListItem.innerHTML = `
+          <span class="timing-day">${timing.dayOfWeek}</span>
+          <span class="timing-name">${timing.startTime} to ${timing.endTime}</span>
+          <span class="timing-location">${timing.location}</span>
+          <span class="timing-roomno">${timing.roomNo}</span>
+          <button class="delete-button" id="${timing._id}">Delete</button>
+      `;
+        const delButton = timingListItem.querySelector(".delete-button");
+        delButton.addEventListener("click", () => {
+          deleteTiming(timing._id);
+        });
+        timingList.appendChild(timingListItem);
+      });
+
+      timingDiv.appendChild(timingList);
+    })
+    .catch(error => console.error(error));
+}
+
+window.onload = function () {
   populateDoctorProfile();
-  populatePatientsList();  
+  populatePatientsList();
+  populateTimings();
 };
 
 
@@ -128,4 +184,50 @@ document.getElementById("update").addEventListener("click", () => {
   updateDoctorProfile();
 });
 
+// uploading a new timing
+async function addTiming() {
+  const doctorId = localStorage.getItem("userId");
+  const dayOfWeek = document.getElementById("day-select").value;
+  const startTime = document.getElementById("time-from-select-start").value;
+  const endTime = document.getElementById("time-to-select-end").value;
+  const location = document.getElementById("location-input").value;
+  const roomNo = document.getElementById("room-input").value;
+  console.log(doctorId, dayOfWeek, startTime, endTime, location, roomNo);
 
+  try {
+    const response = await fetch(`http://localhost:3000/timings/add`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        "doctorId": doctorId,
+        "dayOfWeek": dayOfWeek,
+        "startTime": startTime,
+        "endTime": endTime,
+        "location": location,
+        "roomNo": roomNo,
+      }),
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      alert("Timing added successfully");
+      // updating the UI
+      const timingDiv = document.getElementById("timing-list");
+      while (timingDiv.firstChild) {
+        timingDiv.removeChild(timingDiv.firstChild);
+      }
+      populateTimings();
+    } else {
+      alert("Timing addition failed");
+    }
+  } catch (error) {
+    console.error(error);
+    alert("Timing addition failed - catch block");
+  }
+}
+
+document.getElementById("timing-add").addEventListener("click", () => {
+  addTiming();
+});
