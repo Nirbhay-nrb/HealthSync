@@ -10,6 +10,7 @@ const Doctor = require('../models/doctors');
 // Registration route
 router.post('/register', (req, res, next) => {
     // Hash password before storing in database
+    console.log(req.body);
     bcrypt.hash(req.body.password, 10)
         .then(hash => {
             // Create new user object
