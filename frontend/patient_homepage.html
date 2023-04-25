@@ -83,28 +83,7 @@
             <h1>Documents</h1>
             <!-- Document list -->
             <div class="column3">
-                <div class="document-list">
-                    <h3>All Documents</h3>
-                    <ul>
-                        <li>
-                            <span class="document-name">Document 1</span>
-                            <span class="document-date">Uploaded on Jan 1, 2023</span>
-                            <span class="document-doctor">Dr. John Doe</span>
-                            <button class="delete-button">Delete</button>
-                        </li>
-                        <li>
-                            <span class="document-name">Document 2</span>
-                            <span class="document-date">Uploaded on Jan 2, 2023</span>
-                            <span class="document-doctor">Dr. Jane Smith</span>
-                            <button class="delete-button">Delete</button>
-                        </li>
-                        <li>
-                            <span class="document-name">Document 3</span>
-                            <span class="document-date">Uploaded on Jan 3, 2023</span>
-                            <span class="document-doctor">Dr. Alex Lee</span>
-                            <button class="delete-button">Delete</button>
-                        </li>
-                    </ul>
+                <div id="document-list" class="document-list">
                 </div>
             </div>
 
@@ -119,15 +98,8 @@
                         <label for="document-name">Name:</label>
                         <input type="text" id="document-name" name="document-name">
 
-                        <label for="doctor-select">Select doctor:</label>
-                        <select id="doctor-select" name="doctor-select">
-                            <option value="Dr. John Doe">Dr. John Doe</option>
-                            <option value="Dr. Jane Smith">Dr. Jane Smith</option>
-                            <option value="Dr. Alex Lee">Dr. Alex Lee</option>
-                        </select>
-
-                        <button type="submit">Upload</button>
                     </form>
+                    <button id="upload-doc">Upload</button>
                 </div>
             </div>
         </section>

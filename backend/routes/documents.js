@@ -35,12 +35,13 @@ router.get('/get/:id', async (req, res) => {
 
 // Route to upload files to the server
 router.post('/upload', upload.single('file'), async (req, res) => {
+    // req.skipMiddleware = true;
     try {
+        console.log(req.file.path);
         const newDocument = new Document({
             patientId: new mongoose.Types.ObjectId(req.body.patientId),
             name: req.body.name,
             dateOfUpload: req.body.dateOfUpload,
-            doctorId: new mongoose.Types.ObjectId(req.body.doctorId),
             path: req.file.path
         });
         const savedDocument = await newDocument.save();
@@ -73,6 +74,7 @@ router.delete('/delete/:id', async (req, res) => {
 router.get('/patient/:id', async (req, res) => {
     try {
         const documents = await Document.find({ patientId: new mongoose.Types.ObjectId(req.params.id) });
+        // .populate('doctorId', 'name');
         res.send(documents);
     } catch (err) {
         console.error(err);

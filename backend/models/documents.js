@@ -4,7 +4,6 @@ const documentSchema = new mongoose.Schema({
     patientId: { type: mongoose.Types.ObjectId , ref: 'Patients', required: true },
     name: { type: String, required: true },
     dateOfUpload: { type: String, required: true },
-    doctorId: { type: mongoose.Types.ObjectId, ref: 'Doctors', required: true },
     path: { type: String, required: true },
 });
 

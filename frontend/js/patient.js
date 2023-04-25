@@ -1,5 +1,4 @@
 // getting the Patient profile
-
 function populatePatientProfile() {
     // Retrieve Patient user ID from local storage
     const patientId = localStorage.getItem("userId");
@@ -68,9 +67,75 @@ async function populateDoctorsList() {
 
 }
 
+// delete a particular doc
+async function deleteDoc(docId) {
+    console.log(docId);
+    try {
+        const response = await fetch(`http://localhost:3000/documents/delete/${docId}`, {
+            method: "DELETE",
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            alert("Document deleted");
+            const docDiv = document.getElementById(`doc-${docId}`);
+            docDiv.remove();
+        } else {
+            alert("Error deleting document");
+        }
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+// populating the documents list
+async function populateDocuments() {
+    // get the doctor ID from local storage
+    const patientId = localStorage.getItem("userId");
+    console.log(patientId);
+    // make the API call to get the timings for the doctor ID
+    await fetch(`http://localhost:3000/documents/patient/${patientId}`)
+        .then(response => response.json())
+        .then(docs => {
+            // get the timing list element
+            console.log(docs);
+            const docDiv = document.getElementById("document-list");
+            const heading = document.createElement("h3");
+            heading.innerHTML = "All documents";
+            docDiv.appendChild(heading);
+            const docList = document.createElement("ul");
+
+            // loop through the timings and add them as list items to the timing list element
+            docs.forEach(doc => {
+                console.log(doc._id);
+                const docListItem = document.createElement("li");
+                docListItem.setAttribute("id", `doc-${doc._id}`);
+                docListItem.innerHTML = `
+            <span class="document-name">${doc.name}</span>
+            <span class="document-date">${doc.dateOfUpload}</span>
+            <button class="delete-button" id="${doc._id}">Delete</button>
+        `;
+                const docNameButton = docListItem.querySelector(".document-name");
+                docNameButton.addEventListener("click", () => {
+                    console.log(doc.path);
+                    window.location.href = `http://127.0.0.1:5500/backend/${doc.path}`;
+                });
+                const delButton = docListItem.querySelector(".delete-button");
+                delButton.addEventListener("click", () => {
+                    deleteDoc(doc._id);
+                });
+                docList.appendChild(docListItem);
+            });
+
+            docDiv.appendChild(docList);
+        })
+        .catch(error => console.error(error));
+}
+
 window.onload = function () {
     populatePatientProfile();
     populateDoctorsList();
+    populateDocuments();
 };
 
 
@@ -125,4 +190,52 @@ async function updatePatientProfile() {
 
 document.getElementById("update").addEventListener("click", () => {
     updatePatientProfile();
+});
+
+// uploading a document 
+async function uploadDocument() {
+    const patientId = localStorage.getItem("userId");
+    const fileInput = document.getElementById("document-file");
+    const fileName = document.getElementById("document-name").value;
+    const date = new Date().toISOString();
+    const formData = new FormData();
+    formData.append("file", fileInput.files[0]);
+    formData.append("patientId", patientId);
+    formData.append("name", fileName);
+    formData.append("dateOfUpload", date);
+    console.log(fileInput, fileName, patientId, date);
+
+    const blob = new Blob([formData], { type: "multipart/form-data" });
+    const contentLength = blob.size;
+    console.log(contentLength);
+
+    try {
+        const response = await fetch("http://localhost:3000/documents/upload", {
+            method: "POST",
+            headers: {
+                "Content-Type": `multipart/form-data; boundary=${formData._boundary}`,
+                "Content-Length": contentLength.toString(),
+            },
+            body: formData,
+        });
+
+        if (response.ok) {
+            // const data = await response.json();
+            alert("Document uploaded");
+            // add document to UI
+            const docDiv = document.getElementById("document-list");
+            docDiv.innerHTML = "";
+            populateDocuments();
+        } else {
+            alert("Document upload failed");
+        }
+    } catch (error) {
+        console.error(error);
+        alert("Document upload failed - catch block");
+    }
+
+}
+
+document.getElementById("upload-doc").addEventListener("click", () => {
+    uploadDocument();
 });
