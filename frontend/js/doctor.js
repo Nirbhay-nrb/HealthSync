@@ -1,3 +1,60 @@
+// Deleting the timing
+async function deleteAppointment(appointmentId) {
+  try {
+    // make the API call to delete the timing with the specified ID
+    await fetch(`http://localhost:3000/appointments/delete/${appointmentId}`, {
+      method: "DELETE"
+    });
+    // remove the timing from the DOM
+    const appointmentListItem = document.getElementById(`appointment-${appointmentId}`);
+    appointmentListItem.remove();
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+async function populateAppointments() {
+  // get the doctor ID from local storage
+  const doctorID = localStorage.getItem("userId");
+  console.log(doctorID);
+  // make the API call to get the timings for the doctor ID
+  await fetch(`http://localhost:3000/appointments/doctor/${doctorID}`)
+    .then(response => response.json())
+    .then(appointments => {
+      // get the appointment list element
+      const appointmentDiv = document.getElementById("appointment-list");
+      const heading = document.createElement("h3");
+      heading.innerHTML = "Upcoming meetings";
+      appointmentDiv.appendChild(heading);
+      const appointmentList = document.createElement("ul");
+
+      // loop through the appointments and add them as list items to the timing list element
+      appointments.forEach(appointment => {
+        console.log(appointment._id);
+        const appointmentListItem = document.createElement("li");
+        appointmentListItem.setAttribute("id", `appointment-${appointment._id}`);
+        appointmentListItem.innerHTML = `
+          <span class="appointment-day">${appointment.timingId.dayOfWeek}</span>
+          <span class="appointment-name">${appointment.timingId.startTime} to ${appointment.timingId.endTime}</span>
+          <span class="appointment-location">${appointment.timingId.location}</span>
+          <span class="appointment-roomno">${appointment.timingId.roomNo}</span>
+          <span class="appointment-doctor">${appointment.doctorId.name}</span>
+          <span class="appointment-patient">${appointment.patientId.name}</span>
+          <button class="delete-button" id="${appointment._id}">Delete</button>
+      `;
+        const delButton = appointmentListItem.querySelector(".delete-button");
+        delButton.addEventListener("click", () => {
+          console.log('delete button clicked');
+          deleteAppointment(appointment._id);
+        });
+        appointmentList.appendChild(appointmentListItem);
+      });
+
+      appointmentDiv.appendChild(appointmentList);
+    })
+    .catch(error => console.error(error));
+}
+
 // getting the doctor profile
 
 function populateDoctorProfile() {
@@ -9,6 +66,7 @@ function populateDoctorProfile() {
     .then((response) => response.json())
     .then((data) => {
       // Populate form fields with retrieved data
+      document.getElementById("doctor-name").innerHTML = data.name;
       document.getElementById("name").value = data.name;
       document.getElementById("dob").value = data.dob;
       document.getElementById("gender").value = data.gender;
@@ -37,20 +95,20 @@ async function populatePatientsList() {
         patientDiv.setAttribute('class', 'patient');
         const patientInfo = document.createElement('div');
         patientInfo.setAttribute('class', 'patient-info');
-        const patientImage = document.createElement('img');
+        // const patientImage = document.createElement('img');
         const patientName = document.createElement('h3');
         const patientSpecialty = document.createElement('p');
         const patientExperience = document.createElement('p');
 
         // Set the doctor information
-        patientImage.src = `imgs/doc1.png`;
-        patientImage.alt = `Doctor ${patient.id}`;
+        // patientImage.src = `imgs/doc1.png`;
+        // patientImage.alt = `Doctor ${patient.id}`;
         patientName.textContent = patient.name;
         patientSpecialty.textContent = `Gender: ${patient.gender}`;
         patientExperience.textContent = `DOB: ${patient.dob}`;
 
         // Add the doctor information to the list item
-        patientInfo.appendChild(patientImage);
+        // patientInfo.appendChild(patientImage);
         patientInfo.appendChild(patientName);
         patientInfo.appendChild(patientSpecialty);
         patientInfo.appendChild(patientExperience);
@@ -126,6 +184,7 @@ window.onload = function () {
   populateDoctorProfile();
   populatePatientsList();
   populateTimings();
+  populateAppointments();
 };
 
 
@@ -180,7 +239,8 @@ async function updateDoctorProfile() {
   }
 }
 
-document.getElementById("update").addEventListener("click", () => {
+document.getElementById("update").addEventListener("click", (event) => {
+  event.preventDefault();
   updateDoctorProfile();
 });
 
@@ -228,6 +288,7 @@ async function addTiming() {
   }
 }
 
-document.getElementById("timing-add").addEventListener("click", () => {
+document.getElementById("timing-add").addEventListener("click", (event) => {
+  event.preventDefault();
   addTiming();
 });

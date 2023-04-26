@@ -46,5 +46,16 @@ router.get('/get/:id', async (req, res) => { // doctor id is to be passed in the
     }
 });
 
+// get all the timings
+router.get('/getAll', async (req, res) => {
+    try {
+        const timings = await Timings.find().populate('doctorId', 'name');
+        res.send(timings);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server error');
+    }
+});
+
 
 module.exports = router;

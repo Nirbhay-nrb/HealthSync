@@ -36,7 +36,8 @@ async function login() {
   }
 }
 
-document.getElementById("login").addEventListener("click", () => {
+document.getElementById("login").addEventListener("click", (event) => {
+  event.preventDefault();
   login();
 });
 
@@ -87,6 +88,7 @@ async function register() {
   }
 }
 
-document.getElementById("register").addEventListener("click", () => {
+document.getElementById("register").addEventListener("click", (event) => {
+  event.preventDefault();
   register();
 });
