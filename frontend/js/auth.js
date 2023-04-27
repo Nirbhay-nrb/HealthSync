@@ -21,7 +21,7 @@ async function login() {
     if (response.ok) {
       const data = await response.json();
       localStorage.setItem("userId", data.userId);
-      alert("login successful");
+      console.log("login successful");
       if (isDoctor) {
         window.location.href = "doctor_homepage.html";
       } else {
@@ -73,7 +73,7 @@ async function register() {
     });
 
     if (response.ok) {
-      alert("Registration successful");
+      // alert("Registration successful");
       if (isDoctor) {
         window.location.href = "doctor_homepage.html";
       } else {

@@ -72,12 +72,12 @@ async function bookAppointment(timingId, doctorId, patientId) {
             })
         });
         if (response.ok) {
-            alert("Appointment booked successfully");
+            // alert("Appointment booked successfully");
             const appointmentDiv = document.getElementById("appointment-list");
             appointmentDiv.innerHTML = "";
             populateAppointments();
         } else {
-            alert("Appointment booking failed");
+            // alert("Appointment booking failed");
         }
     } catch (error) {
         console.error(error);
@@ -209,11 +209,11 @@ async function deleteDoc(docId) {
 
         if (response.ok) {
             const data = await response.json();
-            alert("Document deleted");
+            // alert("Document deleted");
             const docDiv = document.getElementById(`doc-${docId}`);
             docDiv.remove();
         } else {
-            alert("Error deleting document");
+            // alert("Error deleting document");
         }
     } catch (error) {
         console.error(error);
@@ -312,13 +312,13 @@ async function updatePatientProfile() {
 
         if (response.ok) {
             const data = await response.json();
-            alert("Patient profile updated");
+            // alert("Patient profile updated");
         } else {
-            alert("Patient profile update failed");
+            // alert("Patient profile update failed");
         }
     } catch (error) {
         console.error(error);
-        alert("Patient profile update failed - catch block");
+        // alert("Patient profile update failed - catch block");
     }
 }
 
@@ -356,17 +356,17 @@ async function uploadDocument() {
 
         if (response.ok) {
             // const data = await response.json();
-            alert("Document uploaded");
+            // alert("Document uploaded");
             // add document to UI
             const docDiv = document.getElementById("document-list");
             docDiv.innerHTML = "";
             populateDocuments();
         } else {
-            alert("Document upload failed");
+            // alert("Document upload failed");
         }
     } catch (error) {
         console.error(error);
-        alert("Document upload failed - catch block");
+        // alert("Document upload failed - catch block");
     }
 
 }
