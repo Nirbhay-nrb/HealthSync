@@ -229,13 +229,13 @@ async function updateDoctorProfile() {
 
     if (response.ok) {
       const data = await response.json();
-      // alert("Doctor profile updated");
+      alert("Doctor profile updated");
     } else {
-      // alert("Doctor profile update failed");
+      alert("Doctor profile update failed");
     }
   } catch (error) {
     console.error(error);
-    // alert("Doctor profile update failed - catch block");
+    alert("Doctor profile update failed - catch block");
   }
 }
 
@@ -272,7 +272,7 @@ async function addTiming() {
 
     if (response.ok) {
       const data = await response.json();
-      // alert("Timing added successfully");
+      alert("Timing added successfully");
       // updating the UI
       const timingDiv = document.getElementById("timing-list");
       while (timingDiv.firstChild) {
@@ -280,11 +280,11 @@ async function addTiming() {
       }
       populateTimings();
     } else {
-      // alert("Timing addition failed");
+      alert("Timing addition failed");
     }
   } catch (error) {
     console.error(error);
-    // alert("Timing addition failed - catch block");
+    alert("Timing addition failed - catch block");
   }
 }
 
