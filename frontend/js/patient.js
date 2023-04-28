@@ -39,7 +39,7 @@ async function populateAppointments() {
             <span class="appointment-location">${appointment.timingId.location}</span>
             <span class="appointment-roomno">${appointment.timingId.roomNo}</span>
             <span class="appointment-doctor">${appointment.patientId.name}</span>
-            <span class="appointment-patient">'Dr. '${appointment.doctorId.name}</span>
+            <span class="appointment-patient">Dr. ${appointment.doctorId.name}</span>
             <button class="delete-button" id="${appointment._id}">Delete</button>
         `;
                 const delButton = appointmentListItem.querySelector(".delete-button");
